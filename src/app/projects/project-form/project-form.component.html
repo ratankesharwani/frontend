@@ -1,0 +1,27 @@
+<mat-horizontal-stepper [linear]="true">
+  <mat-step [stepControl]="formGroup">
+    <form [formGroup]="formGroup">
+      <ng-template matStepLabel>Project Info</ng-template>
+
+      <mat-form-field class="w-full">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" required />
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" required></textarea>
+      </mat-form-field>
+
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Submit</ng-template>
+    <p>All steps completed!</p>
+    <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+  </mat-step>
+</mat-horizontal-stepper>
