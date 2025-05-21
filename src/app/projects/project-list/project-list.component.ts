@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatCardModule],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatCardModule,MatIcon],
   templateUrl: './project-list.component.html',
   styleUrl: './project-list.component.scss'
 })
@@ -19,9 +21,13 @@ displayedColumns: string[] = ['title', 'description'];
     { title: 'Analytics Dashboard', description: 'Admin charts and insights' },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private location: Location) {}
 
   goToNewProject() {
     this.router.navigate(['/dashboard/projects/new']);
   }
+
+  goBack() {
+  this.location.back();
+}
 }

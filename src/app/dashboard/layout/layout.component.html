@@ -1,14 +1,19 @@
-<mat-sidenav-container fullscreen>
-  <mat-sidenav mode="side" opened>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" [(opened)]="sidenavOpened" class="sidenav">
     <mat-nav-list>
       <a mat-list-item routerLink="/dashboard/projects">Projects</a>
       <a mat-list-item routerLink="/dashboard/github">GitHub</a>
     </mat-nav-list>
   </mat-sidenav>
+
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      Developer Dashboard
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="ml-2">Developer Dashboard</span>
     </mat-toolbar>
+
     <div class="p-4">
       <router-outlet></router-outlet>
     </div>

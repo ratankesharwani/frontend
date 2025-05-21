@@ -32,11 +32,6 @@ export class RegisterComponent {
     private router: Router
   ) {}
 
-  // form = this.fb.group({
-  //   username: ['', Validators.required],
-  //   password: ['', Validators.required],
-  // });
-
    form = new FormGroup({
       username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),

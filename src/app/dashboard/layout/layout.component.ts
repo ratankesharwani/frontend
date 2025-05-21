@@ -24,5 +24,9 @@ import { RouterModule, RouterOutlet } from '@angular/router';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
+sidenavOpened = true;
 
+  toggleSidenav() {
+    this.sidenavOpened = !this.sidenavOpened;
+  }
 }

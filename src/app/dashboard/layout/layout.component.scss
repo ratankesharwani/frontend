@@ -1,0 +1,25 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 220px;
+  background-color: #f5f5f5;
+  border-right: 1px solid #ddd;
+}
+
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
