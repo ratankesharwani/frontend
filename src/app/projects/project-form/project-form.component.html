@@ -1,27 +1,79 @@
 <mat-horizontal-stepper [linear]="true">
-  <mat-step [stepControl]="formGroup">
-    <form [formGroup]="formGroup">
+  <form [formGroup]="formGroup">
+
+    <mat-step [stepControl]="formGroup">
       <ng-template matStepLabel>Project Info</ng-template>
+      <div class="form-grid">
+        <div class="form-row">
+          <mat-form-field>
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
 
-      <mat-form-field class="w-full">
-        <mat-label>Title</mat-label>
-        <input matInput formControlName="title" required />
-      </mat-form-field>
+          <mat-form-field>
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" required />
+          </mat-form-field>
+        </div>
 
-      <mat-form-field class="w-full">
-        <mat-label>Description</mat-label>
-        <textarea matInput formControlName="description" required></textarea>
-      </mat-form-field>
+        <div class="form-row">
+          <mat-form-field>
+            <mat-label>Tech Stack (comma separated)</mat-label>
+            <input matInput formControlName="tech_stack" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Estimated Duration (days)</mat-label>
+            <input matInput type="number" formControlName="estimated_duration" min="1" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field>
+            <mat-label>Logo URL</mat-label>
+            <input matInput formControlName="logo_path" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Assign User</mat-label>
+            <mat-select formControlName="userId">
+              <mat-option *ngFor="let user of users" [value]="user.id">
+                {{ user.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
 
       <div>
         <button mat-button matStepperNext>Next</button>
       </div>
-    </form>
-  </mat-step>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Milestones</ng-template>
+      <div formArrayName="milestones">
+        <div *ngFor="let milestoneCtrl of milestones.controls; let i = index" [formGroupName]="i"
+          class="milestone-item">
+          <mat-form-field class="w-full">
+            <mat-label>Milestone Title</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Milestone Description</mat-label>
+            <input matInput formControlName="description">
+          </mat-form-field>
 
-  <mat-step>
-    <ng-template matStepLabel>Submit</ng-template>
-    <p>All steps completed!</p>
-    <button mat-raised-button color="primary" (click)="submit()">Submit</button>
-  </mat-step>
+          <button mat-icon-button color="warn" (click)="removeMilestone(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <button mat-raised-button color="accent" (click)="addMilestone()">
+        + Add Milestone
+      </button>
+      <div class="mt-4">
+        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+      </div>
+    </mat-step>
+  </form>
 </mat-horizontal-stepper>
