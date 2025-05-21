@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 
 interface User {
   id: number;
-  name: string;
+  username: string;
 }
 @Component({
   selector: 'app-project-form',
@@ -37,7 +37,6 @@ export class ProjectFormComponent {
   private apiUrl = 'http://localhost:3000/projects';
   users: User[] = [];
 
-
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -49,10 +48,9 @@ export class ProjectFormComponent {
       tech_stack: [''],
       estimated_duration: [null, [Validators.min(1)]],
       logo_path: [''],
-      userId: [1],  // bind selected user id here
+      userId: [1],
       milestones: this.fb.array([]),
     });
-
   }
 
   get milestones() {
@@ -60,11 +58,16 @@ export class ProjectFormComponent {
   }
 
   ngOnInit() {
-    this.users = [
-      { id: 1, name: 'Alice Johnson' },
-      { id: 2, name: 'Bob Smith' },
-      { id: 3, name: 'Charlie Brown' },
-    ];
+    this.http.get('http://localhost:3000/auth/users').subscribe({
+      next: (res:any) => (this.users = res),
+      error: (err) => console.error('Fetching users failed', err)
+    });
+
+    // this.users = [
+    //   { id: 1, name: 'Alice Johnson' },
+    //   { id: 2, name: 'Bob Smith' },
+    //   { id: 3, name: 'Charlie Brown' },
+    // ];
   }
 
   addMilestone() {

@@ -38,7 +38,7 @@
             <mat-label>Assign User</mat-label>
             <mat-select formControlName="userId">
               <mat-option *ngFor="let user of users" [value]="user.id">
-                {{ user.name }}
+                {{ user.username }}
               </mat-option>
             </mat-select>
           </mat-form-field>
