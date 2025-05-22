@@ -9,7 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface User {
   id: number;
@@ -40,7 +40,8 @@ export class ProjectFormComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.formGroup = this.fb.group({
       title: ['', Validators.required],
@@ -59,15 +60,36 @@ export class ProjectFormComponent {
 
   ngOnInit() {
     this.http.get('http://localhost:3000/auth/users').subscribe({
-      next: (res:any) => (this.users = res),
+      next: (res: any) => (this.users = res),
       error: (err) => console.error('Fetching users failed', err)
     });
 
-    // this.users = [
-    //   { id: 1, name: 'Alice Johnson' },
-    //   { id: 2, name: 'Bob Smith' },
-    //   { id: 3, name: 'Charlie Brown' },
-    // ];
+    // Check if editing
+    const projectId = this.route.snapshot.paramMap.get('id');
+    if (projectId) {
+      this.http.get(`${this.apiUrl}/${projectId}`).subscribe({
+        next: (project: any) => {
+          // Patch form values
+          this.formGroup.patchValue({
+            title: project.title,
+            description: project.description,
+            tech_stack: (project.tech_stack || []).join(', '),
+            estimated_duration: project.estimated_duration,
+            logo_path: project.logo_path,
+            userId: project.user?.id,
+          });
+
+          this.milestones.clear();
+          (project.milestones || []).forEach((m: any) => {
+            this.milestones.push(this.fb.group({
+              title: [m.title],
+              description: [m.description],
+            }));
+          });
+        },
+        error: (err) => console.error('Failed to load project', err)
+      });
+    }
   }
 
   addMilestone() {
@@ -83,10 +105,26 @@ export class ProjectFormComponent {
 
   submit() {
     if (this.formGroup.valid) {
-      this.http.post(this.apiUrl, this.formGroup.value).subscribe({
-        next: () => this.router.navigate(['/dashboard/projects']),
-        error: (err) => console.error('Project creation failed', err)
-      });
+      const projectId = this.route.snapshot.paramMap.get('id');
+      const payload = { ...this.formGroup.value };
+      if (typeof payload.tech_stack === 'string') {
+        payload.tech_stack = payload.tech_stack
+          .split(',')
+          .map((t: string) => t.trim())
+          .filter(Boolean);
+      }
+
+      if (projectId) {
+        this.http.put(`${this.apiUrl}/${projectId}`, payload).subscribe({
+          next: () => this.router.navigate(['/dashboard/projects']),
+          error: (err) => console.error('Project update failed', err)
+        });
+      } else {
+        this.http.post(this.apiUrl, payload).subscribe({
+          next: () => this.router.navigate(['/dashboard/projects']),
+          error: (err) => console.error('Project creation failed', err)
+        });
+      }
     }
   }
 }

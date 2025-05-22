@@ -16,6 +16,21 @@ export const DASHBOARD_ROUTES: Routes = [
                 loadChildren: () =>
                     import('../github/github.routes').then((m) => m.GITHUB_ROUTES),
             },
+            {
+                path: 'settings',
+                loadChildren: () =>
+                    import('../settings/setting.routes').then((m) => m.SETTING_ROUTES),
+            },
+            {
+                path: '',
+                redirectTo: 'dashboard',
+                pathMatch: 'full',
+            },
+            {
+                path: 'dashboard',
+                loadChildren: () =>
+                    import('../dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES),
+            }
         ],
-    },
+    }
 ];

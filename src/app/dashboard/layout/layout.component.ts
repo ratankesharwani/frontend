@@ -24,9 +24,25 @@ import { RouterModule, RouterOutlet } from '@angular/router';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-sidenavOpened = true;
+  sidenavOpened = true;
+  currentTheme: 'light' | 'dark' = 'light';
+
+
+  ngOnInit() {
+    const saved = localStorage.getItem('theme');
+    this.currentTheme = saved === 'dark' ? 'dark' : 'light';
+    document.body.classList.add(this.currentTheme);
+  }
 
   toggleSidenav() {
     this.sidenavOpened = !this.sidenavOpened;
+  }
+
+  toggleTheme() {
+    const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+    document.body.classList.remove(this.currentTheme);
+    document.body.classList.add(newTheme);
+    this.currentTheme = newTheme;
+    localStorage.setItem('theme', newTheme);
   }
 }

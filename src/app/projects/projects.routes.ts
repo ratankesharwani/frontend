@@ -5,4 +5,5 @@ import { ProjectFormComponent } from './project-form/project-form.component';
 export const PROJECT_ROUTES: Routes = [
     { path: '', component: ProjectListComponent },
     { path: 'new', component: ProjectFormComponent },
+    { path: 'update/:id', component: ProjectFormComponent },
 ];

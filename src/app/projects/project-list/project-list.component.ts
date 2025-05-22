@@ -50,8 +50,9 @@ export class ProjectListComponent {
     this.location.back();
   }
 
-  updateProject($event:any){
-
+  updateProject(event: any) {
+    const projectId = event?.id;
+    this.router.navigate(['/dashboard/projects/update', projectId]);
   }
 
   removeProject($event:any){
