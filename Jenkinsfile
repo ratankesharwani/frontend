@@ -1,47 +1,24 @@
 pipeline {
-  agent any
-
-  tools {
-    nodejs 'NodeLTS'
-  }
-
-  stages {
-    stage('Clone Repo') {
-      steps {
-        echo "Code cloned from GitHub automatically"
-      }
-    }
-
-    stage('Install') {
-      steps {
-        sh 'npm install'
-      }
-    }
-
-    stage('Test') {
-      steps {
-        sh 'npm test'
-      }
-    }
-
-    stage('Build') {
-      steps {
-        sh 'npm run build'
-      }
-    }
-
-    
-
-    stage('Check dist folder') {
-    steps {
-        sh 'ls -la dist'
-    }
-}
-
-    stage('Archive artifacts') {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps { checkout scm }
+        }
+        stage('Install') {
+            steps { sh 'npm install' }
+        }
+        stage('Build') {
+            steps { sh 'npm run build' }
+        }
+        stage('Debug dist') {
+            steps {
+                sh 'ls -l dist'
+            }
+        }
+        stage('Archive') {
             steps {
                 archiveArtifacts artifacts: 'dist/**/*'
             }
         }
-  }
+    }
 }
