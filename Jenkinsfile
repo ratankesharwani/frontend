@@ -30,16 +30,18 @@ pipeline {
       }
     }
 
-    stage('Archive artifacts') {
-            steps {
-                archiveArtifacts artifacts: 'dist/**/*'
-            }
-        }
+    
 
     stage('Check dist folder') {
     steps {
         sh 'ls -la dist'
     }
 }
+
+    stage('Archive artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'dist/**/*'
+            }
+        }
   }
 }
