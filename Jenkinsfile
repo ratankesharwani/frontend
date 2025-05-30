@@ -29,5 +29,17 @@ pipeline {
         sh 'npm run build'
       }
     }
+
+    stage('Archive artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'dist/**/*'
+            }
+        }
+
+    stage('Check dist folder') {
+    steps {
+        sh 'ls -la dist'
+    }
+}
   }
 }
