@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: angular-container
-        image: angular-k8s-app
+        image: ratankesharwani/angular-k8s-app:v1
         ports:
         - containerPort: 80
